@@ -15,6 +15,20 @@ open, and takes you to them.
 > 
 > The rest of this document is written by it.
 
+## This fork
+
+Amended copy of [StavWasPlayZ/omarchy-jump-to](https://github.com/StavWasPlayZ/omarchy-jump-to)
+(MIT, upstream copyright retained in `LICENSE`). Plugin id `io.github.matt-aaz.jump-to`.
+
+Changes over upstream:
+
+- **Rows get their icons.** Upstream asks the shell for the shared application
+  library (`shell.appLibrary`) and renders an empty icon slot when it is absent.
+  The Omarchy shell grants that library only to plugins whose manifest declares
+  the `menu` kind, so an `overlay` such as this one never had it and every row
+  drew blank. `iconSourceFor()` now falls back to Quickshell's own themed
+  lookup, mirroring the library's guards and its generic fallback icon.
+
 ## What it does
 
 The switcher opens on the apps that currently have a window, most recently used
@@ -61,7 +75,7 @@ Committing moves the window, focuses it, and closes the switcher.
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/StavWasPlayZ/omarchy-jump-to --enable
+omarchy plugin add https://github.com/Matt-aaz/omarchy-jump-to --enable
 ```
 
 ### Generic warnings
@@ -80,7 +94,7 @@ has.
 ### Remove it
 
 ```bash
-omarchy plugin remove dev.cstav.omarchy.plugin.jump-to
+omarchy plugin remove io.github.matt-aaz.jump-to
 ```
 
 That deletes the plugin directory and drops its entry from `shell.json`. If you
@@ -97,7 +111,7 @@ Put a row in `~/.config/omarchy/extensions/omarchy-menu.jsonc`:
   "label": "Jump To...",
   "description": "Switch to an open window",
   "aliases": ["windows", "switcher", "alt-tab"],
-  "action": "omarchy-shell -q shell summon dev.cstav.omarchy.plugin.jump-to"
+  "action": "omarchy-shell -q shell summon io.github.matt-aaz.jump-to"
 },
 ```
 
@@ -110,8 +124,8 @@ the Omarchy menu draws one only on rows that navigate inside the menu.
 A keybind beats a trip through the menu. In `~/.config/hypr/bindings.lua`:
 
 ```lua
-o.bind("SUPER + SLASH", "Window: Jump to",
-  "omarchy-shell -q shell toggle dev.cstav.omarchy.plugin.jump-to")
+o.bind("SUPER + GRAVE", "Window: Jump to",
+  "omarchy-shell -q shell toggle io.github.matt-aaz.jump-to")
 ```
 
 ## How rows are named

@@ -189,6 +189,22 @@ Item {
     return { name: "", icon: Model.iconName(cls) }
   }
 
+  // Resolve one row's icon. The host only hands out the shared application
+  // library to plugins whose manifest declares the "menu" kind, so an overlay
+  // never sees it and every row would render an empty slot. Fall back to
+  // Quickshell's own themed lookup, which is not host-gated and is what the
+  // shell's own surfaces call; mirror the library's guards and its generic
+  // icon so an unresolvable name still draws something.
+  function iconSourceFor(icon) {
+    var name = String(icon || "")
+    if (root.appLibrary) return root.appLibrary.iconSource(name)
+    if (name.length === 0) return Quickshell.iconPath("application-x-executable", true)
+    if (name.indexOf("file://") === 0 || name.indexOf("image://") === 0) return name
+    if (name.charAt(0) === "/") return "file://" + name
+    var themed = Quickshell.iconPath(name, true)
+    return themed.length > 0 ? themed : Quickshell.iconPath("application-x-executable", true)
+  }
+
   // True when the last reply was no description of the session at all; the
   // empty state names that instead of claiming there are no windows.
   property bool loadFailed: false
@@ -685,7 +701,7 @@ Item {
                 // icons upscaled and blurry on HiDPI displays.
                 sourceSize.width: width * Screen.devicePixelRatio
                 sourceSize.height: height * Screen.devicePixelRatio
-                source: root.appLibrary ? root.appLibrary.iconSource(row.appIcon) : ""
+                source: root.iconSourceFor(row.appIcon)
                 asynchronous: true
                 anchors.left: parent.left
                 anchors.leftMargin: root.rowReservedBorderLeft + Style.space(8)

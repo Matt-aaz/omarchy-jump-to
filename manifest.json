@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "dev.cstav.omarchy.plugin.jump-to",
+  "id": "io.github.matt-aaz.jump-to",
   "name": "Jump To",
-  "version": "1.0.0",
-  "author": "Stav",
+  "version": "1.0.1",
+  "author": "Stav, Matt-aaz",
   "description": "Searchable window switcher: pick an open app, drill into its windows, jump straight to it",
   "kinds": [
     "overlay"
